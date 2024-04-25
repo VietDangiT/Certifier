@@ -24,7 +24,7 @@ namespace Certificate.Infrastructure.Utilities
                     name = recipientName,
                     email = recipientEmail
                 },
-                issueDate = issueDate,
+                issueDate,
                 groupId,
                 customAttributes = new JObject
                 {

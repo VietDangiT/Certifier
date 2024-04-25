@@ -8,7 +8,7 @@ namespace Certificate.Domain.DTOs.CertificateDTO
         public List<CertificateDTO> certificateDTOs { get; set; }
 
         [JsonProperty("course_id")]
-        public string courseId { get; set; }
+        public int courseId { get; set; }
     }
     public class CertificateDTO
     {

@@ -19,25 +19,39 @@ namespace Certificate.Infrastructure.Services
             _certificateRepository = certificateRepository;
             _courseRepository = courseRepository;
         }
-        public async Task<List<RestResponse>> CreateCertificates(CertificateRequest certificateRequest)
+        public async Task<CertificateResponse> CreateCertificates(CertificateRequest certificateRequest)
         {
-            var content = new List<RestResponse>();
+            var content = new CertificateResponse();
             var certificates = certificateRequest.certificateDTOs;
             var course = await _courseRepository.GetByIdAsync(certificateRequest.courseId);
-            string issueDate = DateTime.Now.Date.ToString("yyyy/MM/dd");
+            string issueDate = DateTime.Now.Date.ToString("yyyy-MM-dd");
             foreach (var item in certificates)
             {
                 var createClient = CreateClient();
                 var createRequest = CreateRequest(item.Name, item.Email, issueDate, course.groupId, course.headSign, course.mentorSign);
-                content.Add(await SendRequest(createClient, createRequest));
+                var result = await SendRequest(createClient, createRequest);
+                if (result.IsSuccessful)
+                {
+                    content.response.Add(true);
+                }
+                
             }
             return content;
         }
 
         private async Task<RestResponse> SendRequest(RestClient client, RestRequest request)
         {
+            try
+            {
             var response = await client.PostAsync(request);
             return response;
+        }
+            catch (Exception ex)
+            {
+                throw new Exception();
+            }
+
+
         }
 
         private RestClient CreateClient()

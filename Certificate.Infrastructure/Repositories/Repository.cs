@@ -30,9 +30,16 @@ namespace Certificate.Infrastructure.Repositories
             return await _context.Set<T>().ToListAsync();
         }
 
-        public async Task<T> GetByIdAsync(string id)
+        public async Task<T> GetByIdAsync(int id)
         {
+            try
+            {
             return await _context.Set<T>().FindAsync(id);
+        }
+            catch (Exception ex)
+            {
+                throw new Exception();
+            }
         }
 
         public async Task UpdateAsync(T entity)

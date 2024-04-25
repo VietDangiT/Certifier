@@ -11,13 +11,10 @@ namespace Clean_Architecture.Controllers
     {
         private readonly IMediator _mediator;
 
-        public CertificateController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        public CertificateController(IMediator mediator) => _mediator = mediator;
 
         [HttpPost("create")]
-        public async Task<ActionResult<List<RestResponse>>> Create([FromBody] CreateCertificatesCommand request)
+        public async Task<ActionResult<List<bool>>> Create([FromBody] CreateCertificatesCommand request)
         {
             var data = await _mediator.Send(request);
             return Ok(data);

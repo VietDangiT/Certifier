@@ -5,6 +5,6 @@ namespace Certificate.Domain.IServices
 {
     public interface ICertificateService
     {
-        Task<List<RestResponse>> CreateCertificates(CertificateRequest certificateRequest);
+        Task<CertificateResponse> CreateCertificates(CertificateRequest certificateRequest);
     }
 }

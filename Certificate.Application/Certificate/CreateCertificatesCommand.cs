@@ -4,12 +4,12 @@ using Newtonsoft.Json;
 
 namespace Certificate.Application.Certificate
 {
-    public class CreateCertificatesCommand : IRequest<CertificateRequest>
+    public class CreateCertificatesCommand : IRequest<CertificateResponse>
     {
         [JsonProperty("user_info")]
         public List<CertificateDTO> certificateDTOs { get; set; }
 
         [JsonProperty("course_id")]
-        public string courseId { get; set; }
+        public int courseId { get; set; }
     }
 }

@@ -1,10 +1,11 @@
 ﻿using Certificate.Domain.DTOs.CertificateDTO;
 using Certificate.Domain.IServices;
+using MediatR;
 using RestSharp;
 
 namespace Certificate.Application.Certificate
 {
-    public class CreateCertificatesHandler
+    public class CreateCertificatesHandler : IRequestHandler<CreateCertificatesCommand, CertificateResponse>
     {
         private readonly ICertificateService _certificateService;
         
@@ -13,11 +14,12 @@ namespace Certificate.Application.Certificate
             _certificateService = certificateService;
         }
 
-        public async Task<List<RestResponse>> Handle(CreateCertificatesCommand request, CancellationToken cancellationToken)
+        public async Task<CertificateResponse> Handle(CreateCertificatesCommand request, CancellationToken cancellationToken)
         {
             var req = new CertificateRequest()
             {
-                certificateDTOs = request.certificateDTOs
+                certificateDTOs = request.certificateDTOs,
+                courseId = request.courseId
             };
             var result = await _certificateService.CreateCertificates(req);
             return result;

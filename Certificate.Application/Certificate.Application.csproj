@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Certificate.Infrastructure\Certificate.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Course\" />
+  </ItemGroup>
+
 </Project>
