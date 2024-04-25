@@ -8,9 +8,9 @@ using Certificate.Domain.IRepositories;
 namespace Certificate.Infrastructure.Services
 {
     public class CertificateService : ICertificateService
-    {
+    { 
 
-        private ICertificateRepository _certificateRepository;
+        private ICertificateRepository _certificateRepository; 
         private ICourseRepository _courseRepository;
 
         public CertificateService(ICertificateRepository certificateRepository,
@@ -43,9 +43,9 @@ namespace Certificate.Infrastructure.Services
         {
             try
             {
-                var response = await client.PostAsync(request);
-                return response;
-            }
+            var response = await client.PostAsync(request);
+            return response;
+        }
             catch (Exception ex)
             {
                 throw new Exception();
@@ -74,6 +74,6 @@ namespace Certificate.Infrastructure.Services
             return request;
         }
 
-
+        
     }
 }

@@ -21,6 +21,7 @@ namespace Certificate.Test
 
             var result = await certificateService.CreateCertificates(userList);
 
+            Assert.AreEqual(5, result.Count);
         }
 
         private CertificateRequest GetUserList()
@@ -38,7 +39,7 @@ namespace Certificate.Test
                 }
             };
 
-        }
+    }
 
         [TestMethod]
         public async Task Create_Certificate_Test()
@@ -53,5 +54,5 @@ namespace Certificate.Test
             var response = await client.PostAsync(request);
 
         }
-    }
+}
 }

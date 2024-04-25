@@ -34,8 +34,8 @@ namespace Certificate.Infrastructure.Repositories
         {
             try
             {
-                return await _context.Set<T>().FindAsync(id);
-            }
+            return await _context.Set<T>().FindAsync(id);
+        }
             catch (Exception ex)
             {
                 throw new Exception();

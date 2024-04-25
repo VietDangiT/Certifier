@@ -8,7 +8,7 @@ namespace Certificate.Application.Certificate
     public class CreateCertificatesHandler : IRequestHandler<CreateCertificatesCommand, CertificateResponse>
     {
         private readonly ICertificateService _certificateService;
-
+        
         public CreateCertificatesHandler(ICertificateService certificateService)
         {
             _certificateService = certificateService;
