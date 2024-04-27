@@ -13,6 +13,8 @@ namespace Certificate.Infrastructure
             services.AddScoped<ICertificateService, CertificateService>();
             services.AddScoped<ICertificateRepository, CertificateRepository>();
             services.AddScoped<ICourseRepository, CourseRepository>();
+            services.AddScoped<ICourseService, CourseService>();
+            services.AddScoped<IUserService, UserService>();
             return services;
         }
     }

@@ -1,7 +1,8 @@
-﻿using Certificate.Application.Certificate;
+﻿using Certificate.Application.Certificate.Commands.CreateCertificates;
+using Certificate.Application.Certificate.Queries.GetUsers;
+using Certificate.Domain.DTOs.UserDTO;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using RestSharp;
 
 namespace Clean_Architecture.Controllers
 {
@@ -18,6 +19,13 @@ namespace Clean_Architecture.Controllers
         {
             var data = await _mediator.Send(request);
             return Ok(data);
-        } 
+        }
+
+        [HttpPost("users")]
+        public async Task<ActionResult<List<UserDTO>>> GetUsers([FromBody]GetUsersWithPagination request)
+        {
+            var data = await _mediator.Send(request);
+            return Ok(data);
+        }
     }
 }

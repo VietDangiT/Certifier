@@ -1,5 +1,5 @@
 ﻿using Certificate.Domain.DTOs.CertificateDTO;
-using RestSharp;
+using Certificate.Domain.DTOs.UserDTO;
 
 namespace Certificate.Domain.IServices
 {

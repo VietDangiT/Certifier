@@ -39,6 +39,7 @@ namespace Certificate.Infrastructure.Services
             return content;
         }
 
+
         private async Task<RestResponse> SendRequest(RestClient client, RestRequest request)
         {
             try
