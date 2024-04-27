@@ -4,13 +4,17 @@ using RestSharp;
 using Certificate.Domain.Common;
 using Certificate.Infrastructure.Utilities;
 using Certificate.Domain.IRepositories;
+using System.Text.RegularExpressions;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using Certificate.Domain.DTOs;
 
 namespace Certificate.Infrastructure.Services
 {
     public class CertificateService : ICertificateService
-    { 
+    {
 
-        private ICertificateRepository _certificateRepository; 
+        private ICertificateRepository _certificateRepository;
         private ICourseRepository _courseRepository;
 
         public CertificateService(ICertificateRepository certificateRepository,
@@ -27,53 +31,66 @@ namespace Certificate.Infrastructure.Services
             string issueDate = DateTime.Now.Date.ToString("yyyy-MM-dd");
             foreach (var item in certificates)
             {
-                var createClient = CreateClient();
-                var createRequest = CreateRequest(item.Name, item.Email, issueDate, course.groupId, course.headSign, course.mentorSign);
-                var result = await SendRequest(createClient, createRequest);
-                if (result.IsSuccessful)
-                {
-                    content.response.Add(true);
-                }
-                
+                var certificate = await CreateCredential(item.Name, item.Email, issueDate, course.groupId, course.headSign, course.mentorSign);
+                await PublishAsync(certificate.Id);
+                var file = await StoreByte(certificate.PublicId);
+                await UpdateUserInfo(item.id, file);
             }
             return content;
         }
 
-        private async Task<RestResponse> SendRequest(RestClient client, RestRequest request)
+        private RestClient CreateClient(string apiLink)
         {
-            try
-            {
-            var response = await client.PostAsync(request);
-            return response;
-        }
-            catch (Exception ex)
-            {
-                throw new Exception();
-            }
-
-
-        }
-
-        private RestClient CreateClient()
-        {
-            var options = new RestClientOptions(Constants.PARTNER_API);
+            var options = new RestClientOptions(apiLink);
             var client = new RestClient(options);
             return client;
         }
 
-        private RestRequest CreateRequest(string recipientName,
+
+
+        private async Task<CertificateModel> CreateCredential(string recipientName,
                                             string recipientEmail,
                                             string issueDate,
                                             string groupID,
                                             string headSign,
                                             string mentorSign)
         {
+            var client = CreateClient(Constants.PARTNER_API);
             var request = new RestRequest("");
             HttpHelper.AddHeaders(request, Constants.TOKEN);
             HttpHelper.AddBody(request, recipientName, recipientEmail, issueDate, groupID, headSign, mentorSign);
-            return request;
+            var response = await client.PostAsync(request);
+            return JsonConvert.DeserializeObject<CertificateModel>(response.Content);
+        }
+        private async Task PublishAsync(string Id)
+        {
+            var client = CreateClient(Constants.PARTNER_API + "/" + Id + Constants.PUBLISH);
+            var request = new RestRequest("");
+            HttpHelper.AddHeaders(request, Constants.TOKEN);
+            var response = await client.PostAsync(request);
+
+        }
+        private async Task<byte[]> StoreByte(string publishId)
+        {
+            var link = Constants.CERTI_PDF + publishId + Constants.PDF;
+            using (var httpClient = new HttpClient())
+            {
+                return await httpClient.GetByteArrayAsync(link);
+            }
         }
 
-        
+        private async Task UpdateUserInfo(int userId, byte[] file)
+        {
+            var user = await _certificateRepository.GetByIdAsync(userId);
+            user.pdfFile = file;
+            await _certificateRepository.UpdateAsync(user);
+        }
+
+
+        public async Task<byte[]> GetCredentialFile(int userId)
+        {
+            var user = await _certificateRepository.GetByIdAsync(userId);
+            return user.pdfFile;
+        }
     }
 }

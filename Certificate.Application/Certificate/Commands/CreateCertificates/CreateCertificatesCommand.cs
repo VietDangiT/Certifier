@@ -2,7 +2,7 @@
 using MediatR;
 using Newtonsoft.Json;
 
-namespace Certificate.Application.Certificate
+namespace Certificate.Application.Certificate.Commands.CreateCertificates
 {
     public class CreateCertificatesCommand : IRequest<CertificateResponse>
     {

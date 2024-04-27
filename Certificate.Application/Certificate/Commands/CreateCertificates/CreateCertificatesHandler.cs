@@ -1,14 +1,13 @@
 ﻿using Certificate.Domain.DTOs.CertificateDTO;
 using Certificate.Domain.IServices;
 using MediatR;
-using RestSharp;
 
-namespace Certificate.Application.Certificate
+namespace Certificate.Application.Certificate.Commands.CreateCertificates
 {
     public class CreateCertificatesHandler : IRequestHandler<CreateCertificatesCommand, CertificateResponse>
     {
         private readonly ICertificateService _certificateService;
-        
+
         public CreateCertificatesHandler(ICertificateService certificateService)
         {
             _certificateService = certificateService;

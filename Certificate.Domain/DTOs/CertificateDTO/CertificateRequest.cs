@@ -12,6 +12,7 @@ namespace Certificate.Domain.DTOs.CertificateDTO
     }
     public class CertificateDTO
     {
+        public int id { get; set; }
         [JsonProperty("name")]
         public string Name { get; set; }
 
