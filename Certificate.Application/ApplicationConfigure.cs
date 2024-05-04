@@ -10,7 +10,6 @@ namespace Certificate.Application
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
             return services;
-            //asad
         }
     }
 }
